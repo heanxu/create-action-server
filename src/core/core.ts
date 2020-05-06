@@ -1,5 +1,6 @@
-const globalAny: any = globalThis
+import * as _ from 'underscore'
 
+const globalAny: any = globalThis
 
 interface Input {
   Action: 'string'
@@ -27,11 +28,11 @@ class ApiBase {
   }
 
   public init() {
-    this.check_params()
-    this.check_type()
+    this.checkParams()
+    this.checkType()
   }
 
-  private check_params() {
+  private checkParams() {
     if (this.required) {
 
       const missParams: string[] = []
@@ -60,11 +61,72 @@ class ApiBase {
     }
   }
 
-
-  private check_type() {
+  private checkTypeUtil(key: string, val: any) {
+    let self = this
     /**
-     * 检查参数类型 TODO:
+     * enum
      */
+    if (_.isArray(val)) {
+      if (_.isArray(self.input[key])) {
+        if (_.difference(self.input[key], val).length) {
+          throw globalAny.MY_ERROR.ENUM_ERROR(key, val)
+        }
+      } else {
+        if (!val.includes(self.input[key])) {
+          throw globalAny.MY_ERROR.ENUM_ERROR(key, val)
+        }
+      }
+      return
+    }
+
+    /**
+     * range
+     */
+
+    if (_.isObject(val)) {
+      if (!_.isNumber(self.input[key])) {
+        throw globalAny.MY_ERROR.TYPE_ERROR(key, 'number')
+      }
+      if ((self.input[key] < val.start || self.input[key] > val.end)) {
+        throw globalAny.MY_ERROR.RANGE_ERROR(key, val)
+      }
+      return
+    }
+
+    switch (val.toLowerCase()) {
+      case 'all':
+        break
+      case 'array':
+      case 'number':
+      case 'object':
+      case 'boolean':
+      case 'string':
+        this.throwTypeError(key, val)
+        break
+
+      default:
+        throw globalAny.MY_ERROR.TYPE_ERROR(key, val)
+    }
+  }
+
+  private throwTypeError(key: string, val: any) {
+    const checkKey = 'is' + val.substr(0, 1).toUpperCase() + val.substr(1)
+    if (!(_ as any)[checkKey](this.input[key])) {
+      throw globalAny.MY_ERROR.TYPE_ERROR(key, val)
+    }
+  }
+
+  private checkType() {
+
+    Object.entries(this.required).forEach(([key, val]) => {
+      this.checkTypeUtil(key, val)
+    })
+
+    Object.entries(this.optional).forEach(([key, val]) => {
+      if (this.input[key] !== undefined) {
+        this.checkTypeUtil(key, val)
+      }
+    })
   }
 }
 
