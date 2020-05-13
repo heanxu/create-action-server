@@ -1,20 +1,26 @@
 import * as _ from 'underscore'
 
-const globalAny: any = globalThis
+const globalAny: GlobalAny = globalThis
 
 interface Input {
-  Action: 'string'
+  Action: string
+  [key: string] : any
+}
+
+interface Output extends Input {
+  RetCode: number
+  Data?: [] | object
 }
 
 class ApiBase {
 
-  input: any
+  input: Input
   required: object
   optional: object
-  output: any
-  process: any
+  output: Output
+  process: () => void
 
-  public constructor(input: Input, process: any, required: object, optional: object) {
+  public constructor(input: Input, process: () => void, required: object, optional: object) {
     this.input = input
     this.process = process
     this.required = required
@@ -49,7 +55,7 @@ class ApiBase {
     }
   }
 
-  public send(outputData: any) {
+  public send(outputData: [] | object) {
     this.output.Data = outputData
   }
 

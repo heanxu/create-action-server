@@ -40,5 +40,11 @@ export default {
       RetCode: -400,
       Message: `Required Param ${key} Type Error, Must Be ${type} !`
     }
+  },
+  DEFAULT_ERROR: (message: string) => {
+    return {
+      RetCode: -500,
+      Message: message
+    }
   }
 }

@@ -1,6 +1,6 @@
 import * as express from 'express'
 
-const globalAny : any = globalThis
+const globalAny: GlobalAny = globalThis
 
 export default (req: express.Request, res: express.Response, next: express.NextFunction) : void => {
 

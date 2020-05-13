@@ -1,7 +1,7 @@
 import * as express from 'express'
 import ApiBase from './core'
 
-const globalAny : any = globalThis
+const globalAny: GlobalAny = globalThis
 
 export default async (params: any, res: express.Response) => {
     try {
