@@ -1,13 +1,3 @@
-interface MyError {
-  RetCode: number
-  stack: string
-  Message: 'string'
-}
-
-interface ValRange {
-  start: number
-  end: number
-}
 
 export default {
   PARAMS_ERROR: (params: string) => {
@@ -16,7 +6,7 @@ export default {
       Message: `Missing Required Params ${params} !`  
     }
   },
-  UNKNOWN_ERROR: (error: MyError) => {
+  UNKNOWN_ERROR: (error: UnknownError) => {
     return {
       RetCode: error.RetCode || -1,
       Message: error.Message || 'Exception Error !',
