@@ -1,6 +1,7 @@
 {
   "name": "create-action-server",
-  "version": "0.0.1",
+  "version": "0.0.3",
+  "main": "lib/createApp.js",
   "scripts": {},
   "dependencies": {
     "@types/underscore": "^1.10.0",
