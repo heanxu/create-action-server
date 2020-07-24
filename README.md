@@ -1,18 +1,16 @@
-
-1. create ```app.ts``` 👇
+1. create `app.ts` 👇
 
 ```js
-  import * as createApp  from 'create-app-ts'
+import * as createApp from "create-action-server";
 
-  const app = createApp()
+const app = createApp();
 
-  app.listen(23333)
-
+app.listen(23333);
 ```
 
-2. mkdir ```/api``` 
+2. mkdir `/api`
 
-then you can add your first action api to ```/api``` like test.ts👇
+then you can add your first action api to `/api` like test.ts👇
 
 ```
 .
